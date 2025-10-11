@@ -81,7 +81,7 @@
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
+      text-align: left;
       max-width: 400px;
       display: none;
       animation: aparecer 0.5s ease-in-out;
@@ -94,6 +94,16 @@
 
     .resultado h2 {
       color: #bd70ec;
+      text-align: center;
+    }
+
+    .resultado ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .resultado ul li {
+      margin-bottom: 5px;
     }
   </style>
 </head>
@@ -129,17 +139,15 @@
 
   <div class="resultado" id="resultado">
     <h2>Resultado de Nómina</h2>
-    <p id="infoEmpleado"></p>
+    <ul id="infoEmpleado"></ul>
     <p id="sueldoNeto"></p>
   </div>
 
   <!-- EmailJS SDK -->
-  <script type="text/javascript"
-          src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js">
-  </script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script type="text/javascript">
     (function(){
-      emailjs.init("p6_WKjZLqXZQFx5Oo"); // 🔹 Reemplaza con tu User ID
+      emailjs.init("p6_WKjZLqXZQFx5Oo"); // 🔹 Tu User ID
     })();
 
     document.getElementById("formNomina").addEventListener("submit", function(e) {
@@ -163,14 +171,16 @@
 
       const sueldoNeto = sueldoInicial + bono;
 
-      // Mostrar resultados en pantalla
+      // Mostrar resultados en pantalla de forma ordenada
       document.getElementById("resultado").style.display = "block";
       document.getElementById("infoEmpleado").innerHTML = `
-        <strong>${nombre} ${apellido}</strong><br>
-        📧 ${correo}<br>
-        Días trabajados: ${dias}<br>
-        Pago por día: $${pagoDia.toFixed(2)}<br>
-        Bono aplicado: $${bono.toFixed(2)}
+        <li><strong>Empleado:</strong> ${nombre} ${apellido}</li>
+        <li><strong>Correo:</strong> ${correo}</li>
+        <li><strong>Días trabajados:</strong> ${dias}</li>
+        <li><strong>Pago por día:</strong> $${pagoDia.toFixed(2)}</li>
+        <li><strong>Sueldo inicial:</strong> $${sueldoInicial.toFixed(2)}</li>
+        <li><strong>Tiene hijos:</strong> ${tieneHijos ? "Sí" : "No"}</li>
+        <li><strong>Bono aplicado:</strong> $${bono.toFixed(2)}</li>
       `;
       document.getElementById("sueldoNeto").innerHTML = `<strong>Sueldo Neto: $${sueldoNeto.toFixed(2)}</strong>`;
 
