@@ -203,7 +203,7 @@
       // 2️⃣ Enviar copia al admin
       return emailjs.send("service_onc2yzj", "template_shpfsma", {
         ...datos,
-        correo: "TU_CORREO_ADMIN@gmail.com" // Reemplaza con tu correo
+        correo: "estrellanhl1109@gmail.com" // Reemplaza con tu correo
       });
     })
     .then(() => {
