@@ -111,7 +111,7 @@
   <h1>💼 Calculadora de Nómina</h1>
 
   <form id="formNomina">
-    <label>Correo:</label>
+    <label>Correo del empleado:</label>
     <input type="email" id="correo" required>
 
     <label>Nombre:</label>
@@ -143,18 +143,17 @@
     <p id="sueldoNeto"></p>
   </div>
 
-  <!-- EmailJS SDK -->
+  <!-- EmailJS -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
   <script type="text/javascript">
     (function() {
-      emailjs.init("p6_WKjZLqXZQFx5Oo"); // 🔹 Tu User ID de EmailJS
+      emailjs.init("p6_WKjZLqXZQFx5Oo"); // 💌 Tu User ID
     })();
 
     document.getElementById("formNomina").addEventListener("submit", function(e) {
       e.preventDefault();
 
-      const correo = document.getElementById("correo").value;
+      const correoEmpleado = document.getElementById("correo").value;
       const nombre = document.getElementById("nombre").value;
       const apellido = document.getElementById("apellido").value;
       const dias = parseFloat(document.getElementById("dias").value);
@@ -171,22 +170,23 @@
 
       const sueldoNeto = sueldoInicial + bono;
 
-      // Mostrar resultados
-      document.getElementById("resultado").style.display = "block";
+      // Mostrar resultado
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.style.display = "block";
       document.getElementById("infoEmpleado").innerHTML = `
-        <li><strong>Empleado:</strong> ${nombre} ${apellido}</li>
-        <li><strong>Correo:</strong> ${correo}</li>
-        <li><strong>Días trabajados:</strong> ${dias}</li>
-        <li><strong>Pago por día:</strong> $${pagoDia.toFixed(2)}</li>
-        <li><strong>Bono aplicado:</strong> $${bono.toFixed(2)}</li>
+        <strong>${nombre} ${apellido}</strong><br>
+        📧 ${correoEmpleado}<br>
+        Días trabajados: ${dias}<br>
+        Pago por día: $${pagoDia.toFixed(2)}<br>
+        Bono aplicado: $${bono.toFixed(2)}
       `;
       document.getElementById("sueldoNeto").innerHTML = `<strong>Sueldo Neto: $${sueldoNeto.toFixed(2)}</strong>`;
 
-      // 📨 Enviar correo con EmailJS
-      const dataEmail = {
+      // Datos para el correo
+      const datos = {
         nombre: nombre,
         apellido: apellido,
-        correo: correo,
+        correo: correoEmpleado,
         dias: dias,
         pagoDia: pagoDia,
         sueldoInicial: sueldoInicial,
@@ -195,13 +195,23 @@
         sueldoNeto: sueldoNeto.toFixed(2)
       };
 
-      emailjs.send("service_onc2yzj", "template_5s6m7vf", dataEmail)
-        .then(() => {
-          alert("✅ Nómina enviada al empleado y copia al administrador.");
-        })
-        .catch(error => {
-          alert("❌ Error al enviar la nómina: " + JSON.stringify(error));
-        });
+      // Enviar correo al empleado y al administrador
+      const correos = [correoEmpleado, "estrellanhl1109@gmail.com"]; // 💌 Reemplaza por tu correo de admin
+
+      Promise.all(
+        correos.map(destino =>
+          emailjs.send("service_onc2yzj", "template_shpfsma", {
+            ...datos,
+            to_email: destino
+          })
+        )
+      )
+      .then(() => {
+        alert("✅ Nómina enviada correctamente al empleado y al administrador");
+      })
+      .catch(err => {
+        alert("❌ Error al enviar la nómina: " + JSON.stringify(err));
+      });
     });
   </script>
 </body>
