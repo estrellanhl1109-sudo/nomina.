@@ -189,7 +189,7 @@
   // Enviar al administrador
   emailjs.send("service_onc2yzj", "template_gzatylx", {
     ...templateParams,
-    to_email: "estrellanhl1109@gmail.com" // Reemplaza con tu correo de admin
+    email: "estrellanhl1109@gmail.com" // Reemplaza con tu correo de admin
   });
 
   // Enviar al empleado
