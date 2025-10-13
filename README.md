@@ -198,13 +198,13 @@
     };
 
     // 🔹 Enviar a ti (administrador)
-    emailjs.send("service_onc2yzj", "template_admin", dataEmail)
+    emailjs.send("service_onc2yzj", "template_5s6m7vf", dataEmail)
       .then(() => {
         console.log("📬 Enviado al administrador");
       });
 
     // 🔹 Enviar al empleado
-    emailjs.send("service_onc2yzj", "template_empleado", dataEmail)
+    emailjs.send("service_onc2yzj", "template_shpfsma", dataEmail)
       .then(() => {
         alert("✅ Nómina enviada correctamente al empleado y al administrador");
       })
