@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -81,7 +81,7 @@
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: left;
+      text-align: center;
       max-width: 400px;
       display: none;
       animation: aparecer 0.5s ease-in-out;
@@ -93,25 +93,16 @@
     }
 
     .resultado h2 {
-      color: #bd70ec;
-      text-align: center;
-    }
-
-    .resultado ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-
-    .resultado ul li {
-      margin-bottom: 5px;
+      color: #6a1b9a;
     }
   </style>
 </head>
 <body>
   <h1>💼 Calculadora de Nómina</h1>
 
+<form action ="nomina.php" method="POST">
   <form id="formNomina">
-    <label>Correo del empleado:</label>
+    <label>Correo:</label>
     <input type="email" id="correo" required>
 
     <label>Nombre:</label>
@@ -134,88 +125,81 @@
       <label for="hijos">¿Tiene hijos?</label>
     </div>
 
-    <button type="submit">Calcular y Enviar Nómina</button>
+    <button type="submit">Calcular Sueldo Neto</button>
   </form>
 
   <div class="resultado" id="resultado">
     <h2>Resultado de Nómina</h2>
-    <ul id="infoEmpleado"></ul>
+    <p id="infoEmpleado"></p>
     <p id="sueldoNeto"></p>
   </div>
 
-  <!-- EmailJS -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+ 
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script type="text/javascript">
-  (function() {
-    emailjs.init("p6_WKjZLqXZQFx5Oo"); // 💌 Tu User ID
+  (function(){
+    emailjs.init("p6_WKjZLqXZQFx5Oo"); // 💌 Reemplaza TU_USER_ID por tu ID de EmailJS
   })();
-
-  document.getElementById("formNomina").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const correoEmpleado = document.getElementById("correo").value.trim();
-    const nombre = document.getElementById("nombre").value.trim();
-    const apellido = document.getElementById("apellido").value.trim();
-    const dias = parseFloat(document.getElementById("dias").value);
-    const pagoDia = parseFloat(document.getElementById("pagoDia").value);
-    const sueldoInicial = parseFloat(document.getElementById("sueldoInicial").value);
-    const tieneHijos = document.getElementById("hijos").checked;
-
-    // Calcular bono
-    let bono = 0;
-    if (sueldoInicial <= 1500) bono = sueldoInicial * 0.10;
-    else if (sueldoInicial <= 3000) bono = sueldoInicial * 0.20;
-    else bono = sueldoInicial * 0.25;
-    if (tieneHijos) bono *= 2;
-
-    const sueldoNeto = sueldoInicial + bono;
-
-    // Mostrar resultado en pantalla
-    const resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.style.display = "block";
-    document.getElementById("infoEmpleado").innerHTML = `
-      <strong>${nombre} ${apellido}</strong><br>
-      📧 ${correoEmpleado}<br>
-      Días trabajados: ${dias}<br>
-      Pago por día: $${pagoDia.toFixed(2)}<br>
-      Bono aplicado: $${bono.toFixed(2)}
-    `;
-    document.getElementById("sueldoNeto").innerHTML = `<strong>Sueldo Neto: $${sueldoNeto.toFixed(2)}</strong>`;
-
-    // Datos para EmailJS
-    const datosCorreo = {
-      nombre: nombre,
-      apellido: apellido,
-      dias: dias,
-      pagoDia: pagoDia.toFixed(2),
-      sueldoInicial: sueldoInicial.toFixed(2),
-      hijos: tieneHijos ? "Sí" : "No",
-      bono: bono.toFixed(2),
-      sueldoNeto: sueldoNeto.toFixed(2)
-    };
-
-    // Función para enviar correo
-    function enviarCorreo(destino) {
-      return emailjs.send("service_onc2yzj", "template_shpfsma", {
-        ...datosCorreo,
-        to_email: destino // Asegúrate de que tu plantilla use {{to_email}} o {{correo}} dinámico
-      });
-    }
-
-    // Enviar al empleado y luego al admin
-    enviarCorreo(correoEmpleado)
-      .then(() => {
-        console.log("✅ Correo enviado al empleado");
-        return enviarCorreo("estrellanhl1109@gmail.com"); // Admin
-      })
-      .then(() => {
-        alert("✅ Nómina enviada correctamente al empleado y al admin");
-      })
-      .catch(err => {
-        console.error("❌ Error al enviar la nómina:", err);
-        alert("❌ Error al enviar la nómina. Revisa la consola.");
-      });
-  });
 </script>
+<script>
+    document.getElementById("formNomina").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const correo = document.getElementById("correo").value;
+  const nombre = document.getElementById("nombre").value;
+  const apellido = document.getElementById("apellido").value;
+  const dias = parseFloat(document.getElementById("dias").value);
+  const pagoDia = parseFloat(document.getElementById("pagoDia").value);
+  const sueldoInicial = parseFloat(document.getElementById("sueldoInicial").value);
+  const tieneHijos = document.getElementById("hijos").checked;
+
+  // Calcular bono
+  let bono = 0;
+  if (sueldoInicial <= 1500) bono = sueldoInicial * 0.10;
+  else if (sueldoInicial <= 3000) bono = sueldoInicial * 0.20;
+  else bono = sueldoInicial * 0.25;
+
+  if (tieneHijos) bono *= 2;
+
+  const sueldoNeto = sueldoInicial + bono;
+
+  // Mostrar resultado en pantalla
+  document.getElementById("infoEmpleado").innerHTML = `
+    <strong>${nombre} ${apellido}</strong><br>
+    📧 ${correo}<br>
+    Días trabajados: ${dias}<br>
+    Pago por día: $${pagoDia.toFixed(2)}<br>
+    Bono aplicado: $${bono.toFixed(2)}
+  `;
+  document.getElementById("sueldoNeto").innerHTML = <strong>Sueldo Neto: $${sueldoNeto.toFixed(2)}</strong>;
+  document.getElementById("resultado").style.display = "block";
+
+  // Enviar correo con EmailJS
+  const templateParams = {
+    nombre,
+    apellido,
+    correo,
+    dias,
+    pagoDia: pagoDia.toFixed(2),
+    bono: bono.toFixed(2),
+    sueldoNeto: sueldoNeto.toFixed(2),
+  };
+
+  // Enviar al administrador
+  emailjs.send("service_onc2yzj", "template_gzatylx", {
+    ...templateParams,
+    to_email: "estrellanhl1109@gmail.com" // Reemplaza con tu correo de admin
+  });
+
+  // Enviar al empleado
+  emailjs.send("service_onc2yzj", "template_0owvsiv", {
+    ...templateParams,
+    to_email: correo
+  });
+});
+  </script>
+  </form>
+
 </body>
 </html>
