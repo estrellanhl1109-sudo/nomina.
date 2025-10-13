@@ -185,17 +185,39 @@
     bono: bono.toFixed(2),
     sueldoNeto: sueldoNeto.toFixed(2),
   };
+/ Enviar al administrador
+emailjs.send("TU_SERVICE_ID", "template_nomina", {
+  nombre,
+  apellido,
+  correo,
+  dias,
+  pagoDia: pagoDia.toFixed(2),
+  bono: bono.toFixed(2),
+  sueldoNeto: sueldoNeto.toFixed(2),
+  to_email: "correo_admin@tudominio.com" // Reemplaza con tu correo
+})
+.then(function(response) {
+   console.log("Correo admin enviado ✅", response.status, response.text);
+}, function(error) {
+   console.error("Error enviando correo admin ❌", error);
+});
 
-  // Enviar al administrador
-  emailjs.send("service_onc2yzj", "template_gzatylx", {
-    ...templateParams,
-    email: "estrellanhl1109@gmail.com" // Reemplaza con tu correo de admin
-  });
-
-  // Enviar al empleado
-  emailjs.send("service_onc2yzj", "template_0owvsiv", {
-    ...templateParams,
-    to_email: correo
+// Enviar al empleado
+emailjs.send("TU_SERVICE_ID", "template_nomina", {
+  nombre,
+  apellido,
+  correo,
+  dias,
+  pagoDia: pagoDia.toFixed(2),
+  bono: bono.toFixed(2),
+  sueldoNeto: sueldoNeto.toFixed(2),
+  to_email: correo
+})
+.then(function(response) {
+   console.log("Correo empleado enviado ✅", response.status, response.text);
+}, function(error) {
+   console.error("Error enviando correo empleado ❌", error);
+});
   });
 });
   </script>
